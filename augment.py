@@ -15,10 +15,10 @@ def augment(images):
 
 simple_aug = tf.keras.Sequential(
     [
-        layers.Resizing(IMAGE_SIZE, IMAGE_SIZE),
-        layers.RandomFlip("horizontal"),
-        layers.RandomRotation(factor=0.02),
-        layers.RandomZoom(
+        layers.experimental.preprocessing.Resizing(IMAGE_SIZE, IMAGE_SIZE),
+        layers.experimental.preprocessing.RandomFlip("horizontal"),
+        layers.experimental.preprocessing.RandomRotation(factor=0.02),
+        layers.experimental.preprocessing.RandomZoom(
             height_factor=0.2, width_factor=0.2
         ),
     ]

@@ -13,7 +13,7 @@ def get_training_model():
     model = tf.keras.Sequential(
         [
             layers.Input((IMAGE_SIZE, IMAGE_SIZE, 3)),
-            layers.Rescaling(scale=1.0 / 127.5, offset=-1),
+            layers.experimental.preprocessing.Rescaling(scale=1.0 / 127.5, offset=-1),
             resnet50_v2,
         ]
     )

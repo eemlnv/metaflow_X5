@@ -5,7 +5,10 @@ from augment import *
 from config import *
 from model import *
 
-@conda_base(disabled=True)
+import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+
+@conda_base(libraries={'tensorflow': '2.4.0', 'imgaug': '0.4.0', 'numpy': '1.19.5'}, python='3.8')
 class RandAugmentFlow(FlowSpec):
     @step
     def start(self):
@@ -13,7 +16,6 @@ class RandAugmentFlow(FlowSpec):
         tf.random.set_seed(42)
         import numpy as np
 
-        # import tensorflow as tf
         (x_train, y_train), (x_test, y_test) = tf.keras.datasets.cifar10.load_data()
         print(f"Total training examples: {len(x_train)}")
         print(f"Total test examples: {len(x_test)}")
@@ -76,6 +78,7 @@ class RandAugmentFlow(FlowSpec):
 
         self.next(self.join)
 
+    # @conda({'tensorflow': '2.4'})
     @step
     def b(self):
         import tensorflow as tf
@@ -119,12 +122,14 @@ class RandAugmentFlow(FlowSpec):
 
         self.next(self.join)
 
+    # @conda(disabled=True)
     @step
     def join(self, inputs):
         print("Test accuracy with RandAugment: {:.2f}%".format(inputs.a.test_acc * 100))
         print("Test accuracy with simple_aug: {:.2f}%".format(inputs.b.test_acc * 100))
         self.next(self.end)
 
+    # @conda(disabled=True)
     @step
     def end(self):
         pass
